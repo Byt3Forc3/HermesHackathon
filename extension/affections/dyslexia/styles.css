@@ -29,3 +29,28 @@ html.dyslexia-mode {
 html.dyslexia-mode img {
     filter: saturate(1.1) !important; 
 }
+
+html.dyslexia-mode p.dyslexia-focus-active,
+html.dyslexia-mode li.dyslexia-focus-active {
+    filter: blur(4px) opacity(0.5) !important;
+    transition: filter 0.3s ease !important;
+}
+
+/* Keep the selected text crystal clear */
+html.dyslexia-mode .dyslexia-focus-active::selection {
+    background: #ffe877 !important; /* Soft Cream Highlight */
+    color: #000 !important;
+    filter: blur(0) opacity(1) !important;
+    text-shadow: none !important;
+}
+
+.dyslexia-blurred-text {
+    filter: blur(4px) opacity(0.5);
+    transition: filter 0.3s ease;
+}
+
+.dyslexia-focused-text {
+    background: rgba(255, 232, 119, 0.4);
+    padding: 2px 0;
+    border-radius: 3px;
+}
