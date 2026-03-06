@@ -1,68 +1,56 @@
-/* Dyslexia accessibility defaults.
-     The runtime script `applyDyslexia.js` injects additional
-     font-face rules and a class on the document element.
+/* Dyslexia Structural Rules */
 
-     - Preferred fonts: OpenDyslexic, Lexend
-     - Fallbacks: Arial, Comic Sans, Verdana, Tahoma, Century Gothic, Trebuchet
-     - Default font size: 12-14 pt (approx. 16-19px). The script uses 16px by default.
-*/
+/* Narrower content column for easier eye tracking */
+html.dyslexia-mode main, 
+html.dyslexia-mode article, 
+html.dyslexia-mode #content,
+html.dyslexia-mode .mw-body {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 30px !important;
+    display: block !important;
+}
 
+/* Ensure links remain underlined and clear */
+html.dyslexia-mode a {
+    color: #001f41 !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+}
 
-.dyslexia-friendly, .dyslexia-friendly * {
-    font-family: 'OpenDyslexic', 'Lexend', Arial, 'Comic Sans MS', Verdana, Tahoma, 'Century Gothic', 'Trebuchet MS', sans-serif !important;
-    font-size: 16px !important;
-    line-height: 1.6 !important;
-    text-align: left !important;
-    text-transform: none !important;
-    letter-spacing: 0.5px !important;
-    word-spacing: 0.3px !important;
-    /* reduce visual noise */
+html.dyslexia-mode {
+    /* saturate(0.5) = 50% saturation (muted)
+       saturate(1.0) = 100% saturation (normal)
+    */
+    filter: saturate(0.9) contrast(0.9) !important;
+}
+
+/* Ensure images don't get too washed out if you want them preserved */
+html.dyslexia-mode img {
+    filter: saturate(1.1) !important; 
+}
+
+html.dyslexia-mode p.dyslexia-focus-active,
+html.dyslexia-mode li.dyslexia-focus-active {
+    filter: blur(4px) opacity(0.5) !important;
+    transition: filter 0.3s ease !important;
+}
+
+/* Keep the selected text crystal clear */
+html.dyslexia-mode .dyslexia-focus-active::selection {
+    background: #ffe877 !important; /* Soft Cream Highlight */
+    color: #000 !important;
+    filter: blur(0) opacity(1) !important;
     text-shadow: none !important;
 }
 
-/*small helper to increase font size if users prefer larger text */
-.dyslexia-friendly--large, .dyslexia-friendly--large * {
-    font-size: 19px !important;
+.dyslexia-blurred-text {
+    filter: blur(4px) opacity(0.5);
+    transition: filter 0.3s ease;
 }
 
-/* Headings and emphasis */
-.dyslexia-friendly h1, .dyslexia-friendly h2, .dyslexia-friendly h3, .dyslexia-friendly h4, .dyslexia-friendly h5, .dyslexia-friendly h6 {
-    font-weight: 700 !important;
-    margin-top: 1em !important;
-    margin-bottom: 0.5em !important;
-}
-.dyslexia-friendly h1 { font-size: 32px !important; }
-.dyslexia-friendly h2 { font-size: 28px !important; }
-.dyslexia-friendly h3 { font-size: 24px !important; }
-
-.dyslexia-friendly b, .dyslexia-friendly strong { font-weight: 700 !important; }
-.dyslexia-friendly em, .dyslexia-friendly i { /* italics are not recommended for dyslexic readers — use bold instead */ font-style: normal !important; text-decoration: none !important; font-weight: 700 !important; }
-
-/* Links: underline instead of relying on color alone; subtle, low-noise color */
-.dyslexia-friendly a { text-decoration: underline !important; text-underline-offset: 2px !important; text-decoration-thickness: 1px !important; color: rgba(26,115,232,0.9) !important; }
-.dyslexia-friendly a:visited { color: rgba(26,115,232,0.7) !important; }
-.dyslexia-friendly a:hover, .dyslexia-friendly a:focus { box-shadow: 0 0 0 3px rgba(26,115,232,0.08) !important; outline: none !important; }
-
-/* Box utility for emphasis */
-.dyslexia-friendly .dyslexia-box { border: 2px solid rgba(0,0,0,0.12) !important; padding: 0.6em !important; border-radius: 6px !important; background: rgba(0,0,0,0.02) !important; }
-
-/* Layout / vertical rhythm and readability */
-.dyslexia-friendly p, .dyslexia-friendly li, .dyslexia-friendly blockquote, .dyslexia-friendly pre {
-    max-width: 60ch !important;
-    margin-top: 0 !important;
-    margin-bottom: 1rem !important;
-    line-height: 1.6 !important;
-    text-align: left !important;
-}
-.dyslexia-friendly ul, .dyslexia-friendly ol {
-    list-style-position: outside !important;
-    padding-left: 1.25rem !important;
-}
-.dyslexia-friendly li {
-    margin-bottom: 0.6rem !important;
-}
-
-/* Gentle avoidance of extremely narrow columns: allow column-like elements to keep readable widths when possible */
-.dyslexia-friendly [role="column"], .dyslexia-friendly .column, .dyslexia-friendly .col {
-    min-width: 200px !important;
+.dyslexia-focused-text {
+    background: rgba(255, 232, 119, 0.378);
+    padding: 2px 0;
+    border-radius: 3px;
 }
