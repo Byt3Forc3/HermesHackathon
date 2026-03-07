@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const modules = ["dyslexia", "adhd", "autism", "color_blindness", "partially_blindness", "epilepsy", "simplify", "reader_mode"];
+    const modules = ["dyslexia", "adhd", "autism", "color_blindness", "partially_blindness", "epilepsy", "simplify", "reader_mode", "text_to_speech"];
     const checkboxes = Object.fromEntries(
         modules.map(id => [id, document.getElementById(id)])
     );
@@ -20,14 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add listeners
     modules.forEach(mod => {
-        checkboxes[mod].addEventListener("change", () => {
-            applySelection(mod, checkboxes[mod].checked);
-        });
+        if (checkboxes[mod]) {
+            checkboxes[mod].addEventListener("change", () => {
+                applySelection(mod, checkboxes[mod].checked);
+            });
+        }
     });
 });
 
 function applySelection(selected, isChecked) {
-    const modules = ["dyslexia", "adhd", "autism", "color_blindness", "partially_blindness", "epilepsy", "simplify", "reader_mode"];
+    const modules = ["dyslexia", "adhd", "autism", "color_blindness", "partially_blindness", "epilepsy", "simplify", "reader_mode", "text_to_speech"];
 
     // Turn off all other checkboxes when selecting one
     if (isChecked) {

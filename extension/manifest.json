@@ -69,6 +69,8 @@
         "affections/autism/*.css",
         "affections/simplify/settings-popup.html",
         "affections/simplify/settings-popup.js",
+        "affections/text_to_speech/*.js",
+        "affections/text_to_speech/*.css",
         "api/*.js"
       ],
       "matches": ["<all_urls>"]
