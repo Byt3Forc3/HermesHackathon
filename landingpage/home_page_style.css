@@ -1,0 +1,551 @@
+:root {
+    --bg-color: #fdfaf6;
+    /* Soft warm off-white */
+    --text-color: #3b3a36;
+    /* Soft dark gray/brown for readability without harsh contrast */
+    --text-muted: #78756c;
+    /* Muted earthy tone */
+    --primary-gradient: linear-gradient(135deg, #f2a65a 0%, #e7717d 100%);
+    /* Soft warm orange to muted rose */
+    --secondary-gradient: linear-gradient(135deg, #7da3a1 0%, #a2b09a 100%);
+    /* Sage to soft teal */
+    --card-bg: rgba(255, 255, 255, 0.7);
+    /* Lighter cards */
+    --card-border: rgba(120, 117, 108, 0.15);
+    /* Soft border */
+    --card-hover: rgba(255, 255, 255, 0.9);
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://antijique.github.io/OpenDyslexic/webfont/OpenDyslexic-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://antijique.github.io/OpenDyslexic/webfont/OpenDyslexic-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://antijique.github.io/OpenDyslexic/webfont/OpenDyslexic-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'OpenDyslexic', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    line-height: 1.6;
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(242, 166, 90, 0.1), transparent 30%),
+        radial-gradient(circle at 85% 30%, rgba(125, 163, 161, 0.15), transparent 30%);
+    background-attachment: fixed;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Navigation */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background: rgba(253, 250, 246, 0.85);
+    /* Matches warm bg */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--card-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo-img {
+    height: 32px;
+    width: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: white;
+    /* Keep white for contrast on button */
+    box-shadow: 0 4px 15px rgba(231, 113, 125, 0.25);
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    white-space: nowrap;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 113, 125, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+    background: var(--card-bg);
+    border-color: rgba(120, 117, 108, 0.3);
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: calc(100vh - 80px);
+    padding: 0 5%;
+    gap: 4rem;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(242, 166, 90, 0.15);
+    /* Soft orange */
+    border: 1px solid rgba(242, 166, 90, 0.3);
+    border-radius: 50px;
+    color: #c9711c;
+    /* Darker warm tone for readability */
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1px;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.rating {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    padding-left: 1rem;
+}
+
+.chrome-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* Laptop Visual Mockup */
+.hero-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    perspective: 1200px;
+    /* Better perspective for the laptop */
+    padding: 2rem 0;
+}
+
+.laptop-mockup {
+    width: 100%;
+    max-width: 550px;
+    position: relative;
+    transform: rotateY(-10deg) rotateX(10deg);
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-style: preserve-3d;
+}
+
+.laptop-mockup:hover {
+    transform: rotateY(-5deg) rotateX(5deg) translateY(-10px);
+}
+
+.laptop-screen {
+    background: #1a1a2e;
+    /* Dark screen border */
+    border-radius: 12px 12px 0 0;
+    padding: 3% 3% 4% 3%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 -5px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 2;
+}
+
+/* The camera dot on top of the screen */
+.laptop-screen::before {
+    content: '';
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #444;
+    border-radius: 50%;
+    box-shadow: inset 0 0 2px #000;
+}
+
+.screen-content {
+    background: #fff;
+    /* Browser background */
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    padding-top: 20px;
+    /* Space for the fake browser bar */
+}
+
+/* Fake browser bar inside the screen */
+.screen-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: #e2e1df;
+    border-bottom: 1px solid #ccc;
+    z-index: 1;
+}
+
+/* Fake browser buttons */
+.screen-content::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff5f56;
+    box-shadow:
+        14px 0 0 #ffbd2e,
+        28px 0 0 #27c93f;
+    z-index: 2;
+}
+
+.screen-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0 0 4px 4px;
+}
+
+.laptop-base {
+    position: relative;
+    background: #e6e6e6;
+    height: 12px;
+    border-radius: 0 0 20px 20px;
+    margin: 0 -5%;
+    /* Stick out slightly from the screen */
+    box-shadow:
+        0 15px 25px rgba(0, 0, 0, 0.15),
+        inset 0 2px 4px rgba(255, 255, 255, 0.8),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* The opening indent on the base */
+.laptop-base::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 15%;
+    height: 4px;
+    background: #ccc;
+    border-radius: 0 0 4px 4px;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.laptop-keyboard {
+    display: none;
+    /* Removed the complex mockups to keep it clean */
+}
+
+/* Features Section */
+.features {
+    padding: 6rem 5%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 2.5rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-5px);
+    border-color: rgba(242, 166, 90, 0.3);
+    /* Soft warm border */
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.icon-blue {
+    background: rgba(125, 163, 161, 0.2);
+}
+
+/* Soft Teal/Sage */
+.icon-purple {
+    background: rgba(242, 166, 90, 0.2);
+}
+
+/* Soft Orange */
+.icon-pink {
+    background: rgba(231, 113, 125, 0.2);
+}
+
+/* Muted Rose */
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: var(--text-muted);
+}
+
+/* Access List - Distinct Horizontal Layout */
+.access-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Two columns on desktop, responsive */
+    gap: 1.5rem;
+    max-width: 1000px; /* Widened to accommodate two columns comfortably */
+    margin: 0 auto;
+}
+
+.access-list-item {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid rgba(120, 117, 108, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.access-list-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--text-muted);
+    opacity: 0.2;
+    transition: all 0.3s ease;
+}
+
+.access-list-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(120, 117, 108, 0.1);
+    border-color: rgba(120, 117, 108, 0.2);
+}
+
+.access-list-item:hover::before {
+    opacity: 1;
+    background: var(--primary-gradient);
+}
+
+.access-icon-wrap {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.bg-blue {
+    background: rgba(125, 163, 161, 0.15);
+}
+
+/* Soft Teal/Sage */
+.bg-purple {
+    background: rgba(162, 176, 154, 0.2);
+}
+
+/* Muted Sage/Green */
+.bg-pink {
+    background: rgba(231, 113, 125, 0.15);
+}
+
+/* Muted Rose */
+.bg-orange {
+    background: rgba(242, 166, 90, 0.15);
+}
+
+/* Soft Orange */
+.bg-teal {
+    background: rgba(125, 163, 161, 0.25);
+}
+
+/* Darker Soft Teal */
+
+
+.access-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-color);
+}
+
+.access-content p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Footer */
+footer {
+    border-top: 1px solid var(--card-border);
+    padding: 3rem 5%;
+    margin-top: 4rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted);
+}
+
+.footer-logo {
+    height: 150px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 4rem;
+    }
+
+    .hero-content {
+        margin: 0 auto;
+    }
+
+    .hero h1 {
+        font-size: 3rem;
+    }
+
+    .hero-actions {
+        align-items: center;
+    }
+
+    .mockup {
+        transform: rotateY(0) rotateX(0);
+    }
+
+    .mockup:hover {
+        transform: translateY(-10px);
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+}
