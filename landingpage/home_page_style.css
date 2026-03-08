@@ -101,6 +101,22 @@ h3 {
     object-fit: cover;
 }
 
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #e7717d;
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;
@@ -493,6 +509,23 @@ h3 {
     font-size: 0.95rem;
     line-height: 1.5;
     margin: 0;
+}
+
+/* Feedback Section */
+.feedback-section {
+    padding: 6rem 5%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.4);
+    border-top: 1px solid var(--card-border);
+}
+
+.feedback-content-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 /* Footer */
