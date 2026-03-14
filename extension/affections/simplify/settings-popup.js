@@ -5,13 +5,21 @@ class SimplifySettings {
     static async getSettings() {
         return new Promise((resolve) => {
             chrome.storage.sync.get(['simplifySettings'], (result) => {
-                resolve(result.simplifySettings || {
+                const stored = result.simplifySettings || {
                     enabled: true,
                     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
-                    textColor: '#333',
+                    textColor: '#333333',
                     lineHeight: '1.5',
                     letterSpacing: '0',
-                });
+                };
+
+                // Normalize any older shorthand colors like "#333" into valid "#rrggbb"
+                if (stored.textColor && /^#([0-9a-fA-F]{3})$/.test(stored.textColor)) {
+                    const hex = stored.textColor.slice(1);
+                    stored.textColor = '#' + hex.split('').map(ch => ch + ch).join('');
+                }
+
+                resolve(stored);
             });
         });
     }
@@ -48,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Load current settings
     document.getElementById('fontFamily').value = settings.fontFamily;
-    document.getElementById('textColor').value = settings.textColor;
+    document.getElementById('textColor').value = settings.textColor || '#333333';
     
     // Load new settings with fallbacks
     if (document.getElementById('lineHeight')) {

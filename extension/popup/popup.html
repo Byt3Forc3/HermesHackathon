@@ -1,49 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
     <div class="container">
-        <h2>Brilliant Mind</h2>
+        <header class="header">
+            <div class="header-text">
+                <h1 class="title">Brilliant Mind</h1>
+                <p class="tagline">See clearly. Think brilliantly.</p>
+            </div>
+            <button type="button" id="closePanel" class="close-btn" aria-label="Close">×</button>
+        </header>
 
-        <div class="option">
-            <label><input type="checkbox" id="dyslexia"> Dyslexia</label>
-        </div>
-        <div class="option">
-            <label><input type="checkbox" id="adhd"> ADHD</label>
-        </div>
-        <div class="option">
-            <label><input type="checkbox" id="autism"> Autism</label>
-        </div>
-         <div class="option">
-            <label><input type="checkbox" id="color_blindness"> Color Blindness</label>
-        </div>
-         <div class="option">
-            <label><input type="checkbox" id="partially_blindness"> Partially Blindness</label>
-        </div>
-        <div class="option">
-            <label><input type="checkbox" id="epilepsy"> Epilepsy</label>
-        </div>
-        <div class="option simplify-row">
-            <label>
-                <input type="checkbox" id="simplify"> Simplify Page
-            </label>
+        <div class="matrix" role="group" aria-label="Accessibility options">
+            <div class="matrix-cell matrix-cell--row1" data-module="dyslexia">
+                <label class="cell-label">
+                    <input type="checkbox" id="dyslexia" aria-label="Dyslexia">
+                    <span class="cell-text">Dyslexia</span>
+                </label>
+            </div>
+            <div class="matrix-cell matrix-cell--row1" data-module="adhd">
+                <label class="cell-label">
+                    <input type="checkbox" id="adhd" aria-label="ADHD">
+                    <span class="cell-text">ADHD</span>
+                </label>
+            </div>
+            <div class="matrix-cell matrix-cell--row1" data-module="autism">
+                <label class="cell-label">
+                    <input type="checkbox" id="autism" aria-label="Autism">
+                    <span class="cell-text">Autism</span>
+                </label>
+            </div>
 
-            <button id="openSimplifySettings" class="simplify-inline-btn">
-                Customize
-            </button>
+            <div class="matrix-cell matrix-cell--row2" data-module="color_blindness">
+                <label class="cell-label">
+                    <input type="checkbox" id="color_blindness" aria-label="Color Blindness">
+                    <span class="cell-text">Color Blindness</span>
+                </label>
+            </div>
+            <div class="matrix-cell matrix-cell--row2" data-module="partially_blindness">
+                <label class="cell-label">
+                    <input type="checkbox" id="partially_blindness" aria-label="Partial Blindness">
+                    <span class="cell-text">Partial Blindness</span>
+                </label>
+            </div>
+            <div class="matrix-cell matrix-cell--row2" data-module="epilepsy">
+                <label class="cell-label">
+                    <input type="checkbox" id="epilepsy" aria-label="Epilepsy">
+                    <span class="cell-text">Epilepsy</span>
+                </label>
+            </div>
+
+            <div class="matrix-cell matrix-cell--row3 matrix-cell--simplify" data-module="simplify">
+                <label class="cell-label">
+                    <input type="checkbox" id="simplify" aria-label="Simplify">
+                    <span class="cell-text">Simplify Page</span>
+                </label>
+            </div>
+            <div class="matrix-cell matrix-cell--row3" data-module="reader_mode">
+                <label class="cell-label">
+                    <input type="checkbox" id="reader_mode" aria-label="Reader Mode">
+                    <span class="cell-text">Reader Mode</span>
+                </label>
+            </div>
+            <div class="matrix-cell matrix-cell--row3" data-module="text_to_speech">
+                <label class="cell-label">
+                    <input type="checkbox" id="text_to_speech" aria-label="Text to Speech">
+                    <span class="cell-text">Text to Speech</span>
+                </label>
+            </div>
         </div>
 
-
-        <div class="option">
-            <label><input type="checkbox" id="reader_mode"> Reader Mode</label>
-        </div>       
-         <div class="option">
-            <label><input type="checkbox" id="text_to_speech"> Text to Speech</label>
-
+        <button
+            type="button"
+            id="openSimplifySettings"
+            class="cell-action simplify-settings-button"
+            aria-label="Customize Simplify"
+        >
+            Customize Settings
+        </button>
     </div>
-
     <script src="popup.js"></script>
 </body>
 </html>
