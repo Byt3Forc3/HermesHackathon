@@ -1,15 +1,12 @@
-// dyslexia/applyDyslexia.js
 
 let dyslexiaFilterActive = false;
 let filterLevel = 0; // 0: Cream, 1: Off-White, 2: Soft Peach
 
 const filterColors = [
-    //"rgba(247, 240, 207, 0.45)", // Cream
-    // "rgba(255, 255, 220, 0.4)", // Off-White
-    "rgba(251, 205, 159, 0.59)"  // Soft Peach
+     "rgba(197, 184, 149, 0.7)", // Off-White
 ];
 
-const filterNames = ["ON", "Off-White", "Soft Peach"];
+const filterNames = ["ON"];  //"Soft-Peach", "Off-White"];
 
 function updateFilterUI() {
     const filter = document.getElementById("dyslexia-calming-filter");
@@ -20,6 +17,7 @@ function updateFilterUI() {
     if (dyslexiaFilterActive) {
         filter.style.display = "block";
         filter.style.backgroundColor = filterColors[filterLevel];
+
         btn.innerText = `Filter: ${filterNames[filterLevel]}`;
         btn.style.background = "#2a8f2a"; // Green for ON
     } else {
@@ -114,38 +112,39 @@ function splitLongParagraphs() {
 
 let isSentenceFocusActive = false;
 
-function initSentenceFocus() {
-    // Create floating Focus button
-    const focusBtn = document.createElement("button");
-    focusBtn.id = "dyslexia-sentence-focus-btn";
-    focusBtn.innerText = "🔍 Focus Sentence";
-    focusBtn.style.cssText = `
-        position: absolute;
-        display: none;
-        z-index: 2147483647;
-        padding: 5px 10px;
-        background: #001f41;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 12px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    `;
-    document.documentElement.appendChild(focusBtn);
 
-    // Show button when selecting text
+function initSentenceFocus() {
+    let focusBtn = document.getElementById("dyslexia-sentence-focus-btn");
+    if (!focusBtn) {
+        focusBtn = document.createElement("button");
+        focusBtn.id = "dyslexia-sentence-focus-btn";
+        focusBtn.innerText = "🔍 Focus";
+        focusBtn.style.cssText = `
+            position: absolute;
+            display: none;
+            z-index: 2147483647;
+            padding: 6px 12px;
+            background: #001f41;
+            color: white;
+            border: 2px solid #ffe877;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            pointer-events: auto;
+        `;
+        document.documentElement.appendChild(focusBtn);
+    }
+
     document.addEventListener("mouseup", () => {
         if (isSentenceFocusActive) return;
-
         const selection = window.getSelection();
         const selectedText = selection.toString().trim();
-
         if (selectedText.length > 0) {
             const range = selection.getRangeAt(0);
             const rect = range.getBoundingClientRect();
-
-            focusBtn.style.top = `${window.scrollY + rect.top - 40}px`;
+            focusBtn.style.top = `${window.scrollY + rect.top - 45}px`;
             focusBtn.style.left = `${window.scrollX + rect.left}px`;
             focusBtn.style.display = "block";
         } else {
@@ -153,112 +152,157 @@ function initSentenceFocus() {
         }
     });
 
-    // Activate focus mode
-    focusBtn.addEventListener("click", () => {
+    focusBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         if (isSentenceFocusActive) return;
 
         const selection = window.getSelection();
         if (!selection.rangeCount) return;
 
-        const container = selection.anchorNode.parentElement.closest("p");
-        if (!container) return;
-
         isSentenceFocusActive = true;
+        focusBtn.style.display = "none";
 
         const range = selection.getRangeAt(0);
+        
+        // Identofy all paragraphs included in the selection
+        const containers = [];
+        let startContainer = range.startContainer.parentElement.closest("p, li, h1, h2, h3, blockquote");
+        let endContainer = range.endContainer.parentElement.closest("p, li, h1, h2, h3, blockquote");
 
-        // Create focused wrapper
-        const focusSpan = document.createElement("span");
-        focusSpan.className = "dyslexia-focused-text";
-
-        try {
-            range.surroundContents(focusSpan);
-        } catch (err) {
-            // Prevent crash if selection partially overlaps complex nodes
+        if (!startContainer || !endContainer) {
             isSentenceFocusActive = false;
             return;
         }
 
-        // Blur other text nodes in paragraph
-        const walker = document.createTreeWalker(
-            container,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-
-        let textNode;
-        while ((textNode = walker.nextNode())) {
-            if (!textNode.textContent.trim()) continue;
-            if (focusSpan.contains(textNode)) continue;
-
-            const blurSpan = document.createElement("span");
-            blurSpan.className = "dyslexia-blurred-text";
-
-            textNode.parentNode.insertBefore(blurSpan, textNode);
-            blurSpan.appendChild(textNode);
+        // Find all elems between start and end
+        let current = startContainer;
+        while (current && current !== endContainer.nextElementSibling) {
+            if (current.matches("p, li, h1, h2, h3, blockquote")) {
+                containers.push(current);
+            }
+            current = current.nextElementSibling;
         }
 
-        focusBtn.style.display = "none";
+        const activeFocusSpans = [];
+
+        containers.forEach(container => {
+            //un range temporar doar pentru bucata din acest container
+            const tempRange = document.createRange();
+            
+            if (container === startContainer && container === endContainer) {
+                // Selection is within the same container
+                tempRange.setStart(range.startContainer, range.startOffset);
+                tempRange.setEnd(range.endContainer, range.endOffset);
+            } else if (container === startContainer) {
+                // Suntem la început (de la cursor până la finalul paragrafului)
+                tempRange.setStart(range.startContainer, range.startOffset);
+                tempRange.setEndAfter(container.lastChild);
+            } else if (container === endContainer) {
+                // Suntem la final (de la începutul paragrafului până la cursor)
+                tempRange.setStartBefore(container.firstChild);
+                tempRange.setEnd(range.endContainer, range.endOffset);
+            } else {
+                // Paragraf complet selectat între cele două
+                tempRange.selectNodeContents(container);
+            }
+
+            const focusSpan = document.createElement("span");
+            focusSpan.className = "dyslexia-focused-text";
+            
+            try {
+                focusSpan.appendChild(tempRange.extractContents());
+                tempRange.insertNode(focusSpan);
+                activeFocusSpans.push({ span: focusSpan, container: container });
+
+                // Apply blur to all other text nodes in the container that are not part of the focus span
+                const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+                let textNode;
+                const nodesToWrap = [];
+                while ((textNode = walker.nextNode())) {
+                    if (!textNode.textContent.trim() || focusSpan.contains(textNode)) continue;
+                    nodesToWrap.push(textNode);
+                }
+
+                nodesToWrap.forEach(node => {
+                    const blurSpan = document.createElement("span");
+                    blurSpan.className = "dyslexia-blurred-text";
+                    if (node.parentNode) {
+                        node.parentNode.insertBefore(blurSpan, node);
+                        blurSpan.appendChild(node);
+                    }
+                });
+            } catch (err) {
+                console.error("Eroare la procesarea containerului:", err);
+            }
+        });
+
         selection.removeAllRanges();
 
-        // Clear focus on click anywhere
         const clearFocus = () => {
-            // Remove blur wrappers safely
-            const blurSpans = container.querySelectorAll(".dyslexia-blurred-text");
-            blurSpans.forEach(span => {
-                while (span.firstChild) {
-                    span.parentNode.insertBefore(span.firstChild, span);
-                }
-                span.remove();
-            });
+            containers.forEach(container => {
+                // Curățăm blur-ul
+                const blurSpans = container.querySelectorAll(".dyslexia-blurred-text");
+                blurSpans.forEach(span => {
+                    while (span.firstChild) span.parentNode.insertBefore(span.firstChild, span);
+                    span.remove();
+                });
 
-            // Unwrap focused span safely (preserves links!)
-            while (focusSpan.firstChild) {
-                focusSpan.parentNode.insertBefore(focusSpan.firstChild, focusSpan);
-            }
-            focusSpan.remove();
+                // Curățăm focus-ul
+                const focusSpans = container.querySelectorAll(".dyslexia-focused-text");
+                focusSpans.forEach(fSpan => {
+                    while (fSpan.firstChild) fSpan.parentNode.insertBefore(fSpan.firstChild, fSpan);
+                    fSpan.remove();
+                });
+
+                container.normalize();
+            });
 
             isSentenceFocusActive = false;
             document.removeEventListener("click", clearFocus);
         };
 
-        setTimeout(() => {
-            document.addEventListener("click", clearFocus);
-        }, 100);
+        setTimeout(() => document.addEventListener("click", clearFocus), 200);
     });
 }
+
 
 export function apply() {
     document.documentElement.classList.add("dyslexia-mode");
 
+    const fontUrl = chrome.runtime.getURL("affections/dyslexia/fonts/OpenDyslexic-Regular.otf");
     if (!document.getElementById("dyslexia-dynamic-style")) {
         const style = document.createElement("style");
         style.id = "dyslexia-dynamic-style";
         style.textContent = `
+
+            @font-face {
+                font-family: 'OpenDyslexic';
+                src: url('${fontUrl}') format('opentype');
+            }
             @import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
 
+
+
             html.dyslexia-mode body,
-            html.dyslexia-mode p {
-                font-family: 'Lexend', sans-serif !important;
+            html.dyslexia-mode p,
+            html.dyslexia-mode span,
+            html.dyslexia-mode li,
+            html.dyslexia-mode h1, html.dyslexia-mode h2, html.dyslexia-mode h3,
+            html.dyslexia-mode div {
+                font-family: 'OpenDyslexic', 'Lexend', sans-serif !important;
                 font-size: 18px !important;
                 word-spacing: 0.3em !important;
                 line-height: 1.9 !important;
-                color: #2c2c2c !important;
+                /* color: #000000 !important; */
             }
 
             html.dyslexia-mode a {
-                color: #002247 !important;
+                /* color: #002247 !important; */
                 text-decoration: none !important;
                 font-weight: bold !important;
-                font-family: 'Lexend', sans-serif !important;
+                font-family: 'OpenDyslexic', 'Lexend', sans-serif !important;
             }
 
-            html.dyslexia-mode i,
-            html.dyslexia-mode em {
-                font-style: normal !important;
-                font-weight: 700 !important;
-            }
 
             /* Focus system styles */
             .dyslexia-blurred-text {
@@ -267,7 +311,7 @@ export function apply() {
             }
 
             .dyslexia-focused-text {
-                background: rgba(255, 232, 119, 0.4);
+                background: rgba(255, 232, 119, 0.19);
                 padding: 2px 0;
                 border-radius: 3px;
             }

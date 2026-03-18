@@ -13,4 +13,3 @@ chrome.storage.local.get("site_" + domain, data => {
             .catch(err => console.error("Error loading module:", mod, err));
     });
 });
-
