@@ -5,10 +5,12 @@ Use a plain, evenly spaced sans serif font such as Arial and Comic Sans. Alterna
 • Avoid green and red/pink as these are difficult for colour-blind individuals
 Avoid underlining and italics: these tend to make the text appear to run
 together. Use bold instead.
+
 HEADINGS AND EMPHASIS.
 ->	 AVOID TEXT IN BLOCK CAPITALS: this is much harder to read.
 ->	For headings, use larger font size in bold, lower case.
 ->  Boxes and borders can be used for effective emphasis.
+
 LAYOUT.
 ->	Use left-justified with ragged right edge.
 ->	Avoid narrow columns (as used in newspapers).
@@ -17,16 +19,19 @@ LAYOUT.
 ->	Line spacing of 1.5 is preferable.
 ->	Avoid starting a sentence at the end of a line.
 ->	Use bullet points and numbering rather than continuous prose.
+
 WRITING STYLE.
 ->	Use short, simple sentences in a direct style.
 ->	Give instructions clearly. Avoid long sentences of explanation.
 ->	Use active rather than passive voice.
-->	 Avoid double negatives.
-->	 Be concise.
+->	Avoid double negatives.
+->	Be concise.
 
 Exemplu :
 https://dyslexiascotland.org.uk/dyslexia-friendly-typed-formats/
-Key point: It’s letter, word and line spacing combined, not style, that makes text easier to read for people with dyslexia. However, familiar fonts will be more helpful. It’s personal preference, so each person should find what works for them.
-Tip: If creating a document or article for a dyslexic reader, offer varying or alternative formats to suit their individual needs. Where possible, provide typed information in someone’s preferred font or in a format that allows them to change the font.
+Key point: It’s letter, word and line spacing combined, not style, that makes text easier to read for people with dyslexia.
+However, familiar fonts will be more helpful. It’s personal preference, so each person should find what works for them.
+Tip: If creating a document or article for a dyslexic reader, offer varying or alternative formats to suit their individual needs. 
+Where possible, provide typed information in someone’s preferred font or in a format that allows them to change the font.
 
 
