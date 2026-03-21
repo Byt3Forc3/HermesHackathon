@@ -148,45 +148,9 @@ function removePartialVisionMode() {
 }
 
 
-// 7. Toggle button
-function createPartialVisionToggle() {
-    if (document.getElementById("partialvision-toggle")) return;
-
-    const btn = document.createElement("button");
-    btn.id = "partialvision-toggle";
-    btn.innerText = "Partial Vision: OFF";
-
-    Object.assign(btn.style, {
-        position: "fixed",
-        bottom: "60px",
-        right: "20px",
-        padding: "10px 15px",
-        background: "#333",
-        color: "white",
-        border: "none",
-        borderRadius: "8px",
-        zIndex: "999999999999",
-        cursor: "pointer"
-    });
-
-    document.body.appendChild(btn);
-
-    btn.addEventListener("click", () => {
-        partialVisionEnabled = !partialVisionEnabled;
-
-        if (partialVisionEnabled) {
-            btn.innerText = "Partial Vision: ON";
-            btn.style.background = "#008c8c";
-            initPartialVisionMode();
-        } else {
-            btn.innerText = "Partial Vision: OFF";
-            btn.style.background = "#333";
-            removePartialVisionMode();
-        }
-    });
-}
-
 export function apply() {
-    createPartialVisionToggle();
-    console.log("Partial Vision (Iframe Mode) loaded.");
+    if (partialVisionEnabled) return;
+    partialVisionEnabled = true;
+    initPartialVisionMode();
+    console.log("Partial Vision (Iframe Mode) enabled.");
 }

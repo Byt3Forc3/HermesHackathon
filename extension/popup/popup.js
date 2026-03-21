@@ -5,15 +5,28 @@ function getTargetTabId() {
 }
 
 function withTargetTab(cb) {
-    const tabId = getTargetTabId();
-    if (tabId != null) {
-        chrome.tabs.get(tabId, (tab) => {
-            if (!chrome.runtime.lastError && tab) cb(tab);
-        });
-    } else {
-        chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-            if (tab) cb(tab);
-        });
+    try {
+        // When the extension is reloaded while this popup is still open,
+        // chrome.* APIs can throw "Extension context invalidated". Guard against that.
+        if (typeof chrome === "undefined" || !chrome.tabs) {
+            return;
+        }
+
+        const tabId = getTargetTabId();
+        if (tabId != null) {
+            chrome.tabs.get(tabId, (tab) => {
+                if (!chrome.runtime.lastError && tab) cb(tab);
+            });
+        } else {
+            chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+                if (tab) cb(tab);
+            });
+        }
+    } catch (e) {
+        // Swallow "Extension context invalidated" which happens only during dev reloads
+        if (!e || !e.message || !e.message.includes("Extension context invalidated")) {
+            throw e;
+        }
     }
 }
 

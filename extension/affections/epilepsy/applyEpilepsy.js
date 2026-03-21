@@ -263,7 +263,8 @@ function removeAdvancedAds() {
         });
     });
 
-    // 2) Remove floating sticky/fixed elements (corner ads)
+    // 2) Remove floating sticky/fixed elements (corner ads),
+    // but NEVER touch the Brilliant Mind panel
     document.querySelectorAll("div, aside, section").forEach(el => {
         const style = window.getComputedStyle(el);
 
@@ -275,7 +276,11 @@ function removeAdvancedAds() {
             (parseInt(style.top) < 50 || parseInt(style.bottom) < 50) &&
             (parseInt(style.left) < 50 || parseInt(style.right) < 50);
 
-        if (isFloating && isCorner) {
+        const isBrilliantMindPanel =
+            el.id === "brilliant-mind-embedded-panel" ||
+            !!el.closest?.("#brilliant-mind-embedded-panel");
+
+        if (isFloating && isCorner && !isBrilliantMindPanel) {
             el.remove();
         }
     });
@@ -346,7 +351,8 @@ function removeFloatingAds() {
         }
     });
 
-    // 2) Remove fixed-position divs with a close button (common in ads)
+    // 2) Remove fixed-position divs with a close button (common in ads),
+    // but NEVER touch the Brilliant Mind panel
     document.querySelectorAll("div").forEach(div => {
         const style = getComputedStyle(div);
 
@@ -355,7 +361,11 @@ function removeFloatingAds() {
                      div.querySelector("button") ||
                      div.querySelector("[role='button']");
 
-        if (isFixed && hasX) {
+        const isBrilliantMindPanel =
+            div.id === "brilliant-mind-embedded-panel" ||
+            !!div.closest("#brilliant-mind-embedded-panel");
+
+        if (isFixed && hasX && !isBrilliantMindPanel) {
             div.remove();
         }
     });
@@ -443,6 +453,39 @@ function initAnimationBlocker() {
 
 // Flag global — activat/dezactivat
 let colorSafetyEnabled = false;
+let closeListenerRegistered = false;
+
+function attachBelowBrilliantPanel(el, fullWidth = true) {
+    let attempts = 0;
+
+    function tryPosition() {
+        const panel = document.getElementById("brilliant-mind-embedded-panel");
+        if (!panel) return false;
+
+        const rect = panel.getBoundingClientRect();
+        const inset = 10;
+        el.style.left = rect.left + inset + "px";
+        el.style.top = rect.bottom + 8 + "px";
+        if (fullWidth) {
+            el.style.width = Math.max(rect.width - inset * 2, 0) + "px";
+            el.style.textAlign = "center";
+        }
+
+        requestAnimationFrame(() => {
+            el.style.transform = "translateY(0)";
+            el.style.opacity = "1";
+        });
+
+        return true;
+    }
+
+    if (tryPosition()) return;
+
+    const id = setInterval(() => {
+        attempts++;
+        if (tryPosition() || attempts > 30) clearInterval(id);
+    }, 100);
+}
 
 
 // 1. Funcția principală de aplicare
@@ -562,30 +605,52 @@ function createColorToggleButton() {
     btn.innerText = "Color Safe: OFF";
 
     btn.style.position = "fixed";
-    btn.style.bottom = "20px";
-    btn.style.right = "20px";
-    btn.style.padding = "10px 14px";
-    btn.style.borderRadius = "8px";
-    btn.style.border = "none";
-    btn.style.fontSize = "14px";
-    btn.style.color = "#fff";
-    btn.style.background = "#444";
+    btn.style.padding = "9px 16px";
+    btn.style.borderRadius = "999px";
+    btn.style.border = "1px solid rgba(44,37,34,0.24)";
+    btn.style.fontSize = "12px";
+    btn.style.color = "#2c2522";
+    btn.style.background = "#e7dcd6";
     btn.style.zIndex = "9999999999999";
     btn.style.cursor = "pointer";
-    btn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+    btn.style.boxShadow = "0 8px 24px rgba(0,0,0,0.35)";
+    btn.style.transform = "translateY(16px)";
+    btn.style.opacity = "0";
+    btn.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
 
     document.body.appendChild(btn);
+    attachBelowBrilliantPanel(btn, true);
 
     btn.addEventListener("click", () => {
         colorSafetyEnabled = !colorSafetyEnabled;
 
         if (colorSafetyEnabled) {
             btn.innerText = "Color Safe: ON";
-            btn.style.background = "#2a8f2a";
+            btn.style.background = "rgba(34,30,30,0.14)";
+            btn.style.borderColor = "rgba(44,37,34,0.6)";
+            btn.style.boxShadow = "0 0 0 1px rgba(34,30,30,0.4), 0 3px 10px rgba(34,30,30,0.3)";
             initColorSafety();
         } else {
             btn.innerText = "Color Safe: OFF";
-            btn.style.background = "#444";
+            btn.style.background = "#e7dcd6";
+            btn.style.borderColor = "rgba(44,37,34,0.24)";
+            btn.style.boxShadow = "0 8px 24px rgba(0,0,0,0.35)";
+            removeColorSafety();
+        }
+    });
+}
+
+function registerCloseListener() {
+    if (closeListenerRegistered) return;
+    closeListenerRegistered = true;
+
+    window.addEventListener("message", (e) => {
+        if (!e.data || e.data.type !== "brilliant-mind-close") return;
+
+        const btn = document.getElementById("color-safety-toggle");
+        if (btn) btn.remove();
+        if (colorSafetyEnabled) {
+            colorSafetyEnabled = false;
             removeColorSafety();
         }
     });
@@ -593,12 +658,17 @@ function createColorToggleButton() {
 
 
 export function apply() {
-    initGifProtection();
-    initVideoProtection();
-    initFloatingAdRemoval();
-    initAdvancedAdRemoval();
-    initAnimationBlocker();
-    initColorSafety(); 
     createColorToggleButton();
+
+    // Run the heavier protections async so the UI stays responsive
+    setTimeout(() => {
+        initGifProtection();
+        initVideoProtection();
+        initFloatingAdRemoval();
+        initAdvancedAdRemoval();
+        initAnimationBlocker();
+    }, 0);
+
+    registerCloseListener();
 
 }

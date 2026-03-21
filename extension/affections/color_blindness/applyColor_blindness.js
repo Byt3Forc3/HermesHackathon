@@ -2,6 +2,39 @@
 let colorBlindnessEnabled = false;  // Flag: whether color blindness mode is active
 let colorBlindnessType = null; // null | "protanopia" | "deuteranopia" | "tritanopia"
 
+let closeListenerRegistered = false;
+
+function attachBelowBrilliantPanel(el, fullWidth = true) {
+    let attempts = 0;
+
+    function tryPosition() {
+        const panel = document.getElementById("brilliant-mind-embedded-panel");
+        if (!panel) return false;
+
+        const rect = panel.getBoundingClientRect();
+        const inset = 10;
+        el.style.left = rect.left + inset + "px";
+        el.style.top = rect.bottom + 8 + "px";
+        if (fullWidth) {
+            el.style.width = Math.max(rect.width - inset * 2, 0) + "px";
+        }
+
+        requestAnimationFrame(() => {
+            el.style.transform = "translateY(0)";
+            el.style.opacity = "1";
+        });
+
+        return true;
+    }
+
+    if (tryPosition()) return;
+
+    const id = setInterval(() => {
+        attempts++;
+        if (tryPosition() || attempts > 30) clearInterval(id);
+    }, 100);
+}
+
 
 // SVG Filters for color blindness
 // These filters are used to simulate different types of color blindness
@@ -77,21 +110,24 @@ function createColorBlindnessMenu() {
 
     menu.style = `
         position: fixed;
-        bottom: 80px;
-        right: 20px;
-        padding: 14px;
-        background: rgba(30,30,30,0.85);
-        border-radius: 10px;
-        color: white;
-        font-family: sans-serif;
-        width: 180px;
-        display: none;
+        padding: 10px 12px 12px;
+        background: #e7dcd6;
+        border-radius: 20px;
+        color: #2c2522;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
         z-index: 999999999999;
+        transform: translateY(16px);
+        opacity: 0;
+        transition: transform 0.2s ease-out, opacity 0.2s ease-out;
     `;
 
     // Menu content: buttons for each type of color blindness
     menu.innerHTML = `
-        <div style="font-size:14px; margin-bottom:8px; font-weight:bold;">
+        <div style="font-size:13px; margin:0 4px 4px; font-weight:600; text-align:center;">
             Color Blindness Mode
         </div>
 
@@ -101,70 +137,65 @@ function createColorBlindnessMenu() {
     `;
 
     document.body.appendChild(menu);
+    attachBelowBrilliantPanel(menu, true);
 
-    document.querySelectorAll(".cb-btn").forEach(btn => {
-        btn.style = `
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 6px;
-            background: #555;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        `;
+    const baseStyle = `
+        width: 100%;
+        padding: 7px 10px;
+        margin-bottom: 6px;
+        background: rgba(255,255,255,0.8);
+        color: #2c2522;
+        border: 1px solid rgba(44,37,34,0.24);
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(34,30,30,0.16);
+        transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    `;
 
+    const setActiveStyles = (activeBtn) => {
+        menu.querySelectorAll(".cb-btn").forEach(b => {
+            b.style.cssText = baseStyle;
+        });
+        if (activeBtn) {
+            activeBtn.style.background = "rgba(34,30,30,0.14)";
+            activeBtn.style.borderColor = "rgba(44,37,34,0.6)";
+            activeBtn.style.boxShadow = "0 0 0 1px rgba(34,30,30,0.4), 0 3px 10px rgba(34,30,30,0.3)";
+        }
+    };
+
+    menu.querySelectorAll(".cb-btn").forEach(btn => {
+        btn.style.cssText = baseStyle;
         btn.addEventListener("click", () => {
             colorBlindnessType = btn.dataset.type;
+            setActiveStyles(btn);
             initColorBlindnessMode();
         });
     });
 }
 
-// UI: Toggle button to enable/disable color blindness mode
-function createColorBlindnessToggle() {
-    if (document.getElementById("colorblind-toggle")) return;
+function registerCloseListener() {
+    if (closeListenerRegistered) return;
+    closeListenerRegistered = true;
 
-    const btn = document.createElement("button");
-    btn.id = "colorblind-toggle";
-    btn.innerText = "Color Blind: OFF";
+    window.addEventListener("message", (e) => {
+        if (!e.data || e.data.type !== "brilliant-mind-close") return;
 
-    btn.style = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 14px;
-        border-radius: 8px;
-        border: none;
-        font-size: 14px;
-        background: #444;
-        color: white;
-        z-index: 999999999999;
-        cursor: pointer;
-    `;
-
-    document.body.appendChild(btn);
-
-    btn.addEventListener("click", () => {
-        colorBlindnessEnabled = !colorBlindnessEnabled;
         const menu = document.getElementById("colorblind-menu");
-
-        if (colorBlindnessEnabled) {
-            btn.innerText = "Color Blind: ON";
-            btn.style.background = "#2a8f2a";
-            menu.style.display = "block";
-            if (colorBlindnessType) initColorBlindnessMode();
-        } else {
-            btn.innerText = "Color Blind: OFF";
-            btn.style.background = "#444";
-            menu.style.display = "none";
-            removeColorBlindnessMode();
-        }
+        if (menu) menu.remove();
+        removeColorBlindnessMode();
+        colorBlindnessEnabled = false;
     });
 }
 
-
 export function apply() {
-    createColorBlindnessToggle();   // Add toggle button
-    createColorBlindnessMenu();   // Add selection menu
+    // When the Color Blindness module is selected from the main panel,
+    // we enable the mode by default and show the submenu under the panel.
+    if (!colorBlindnessEnabled) {
+        colorBlindnessEnabled = true;
+    }
+    createColorBlindnessMenu();
+    registerCloseListener();
 }

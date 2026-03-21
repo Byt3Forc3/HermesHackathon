@@ -8,6 +8,40 @@ const filterColors = [
 
 const filterNames = ["ON"];  //"Soft-Peach", "Off-White"];
 
+let closeListenerRegistered = false;
+
+function attachBelowBrilliantPanel(el, fullWidth = true) {
+    let attempts = 0;
+
+    function tryPosition() {
+        const panel = document.getElementById("brilliant-mind-embedded-panel");
+        if (!panel) return false;
+
+        const rect = panel.getBoundingClientRect();
+        const inset = 10;
+        el.style.left = rect.left + inset + "px";
+        el.style.top = rect.bottom + 8 + "px";
+        if (fullWidth) {
+            el.style.width = Math.max(rect.width - inset * 2, 0) + "px";
+            el.style.textAlign = "center";
+        }
+
+        requestAnimationFrame(() => {
+            el.style.transform = "translateY(0)";
+            el.style.opacity = "1";
+        });
+
+        return true;
+    }
+
+    if (tryPosition()) return;
+
+    const id = setInterval(() => {
+        attempts++;
+        if (tryPosition() || attempts > 30) clearInterval(id);
+    }, 100);
+}
+
 function updateFilterUI() {
     const filter = document.getElementById("dyslexia-calming-filter");
     const btn = document.getElementById("dyslexia-toggle-btn");
@@ -19,11 +53,15 @@ function updateFilterUI() {
         filter.style.backgroundColor = filterColors[filterLevel];
 
         btn.innerText = `Filter: ${filterNames[filterLevel]}`;
-        btn.style.background = "#2a8f2a"; // Green for ON
+        btn.style.background = "rgba(34,30,30,0.14)"; // active highlight
+        btn.style.borderColor = "rgba(44,37,34,0.6)";
+        btn.style.boxShadow = "0 0 0 1px rgba(34,30,30,0.4), 0 3px 10px rgba(34,30,30,0.3)";
     } else {
         filter.style.display = "none";
         btn.innerText = "Filter: OFF";
-        btn.style.background = "#444"; // Grey for OFF
+        btn.style.background = "#e7dcd6";
+        btn.style.borderColor = "rgba(44,37,34,0.24)";
+        btn.style.boxShadow = "0 1px 3px rgba(34,30,30,0.16)";
     }
 }
 
@@ -58,20 +96,24 @@ function createDyslexiaToggle() {
     
     btn.style.cssText = `
         position: fixed !important;
-        bottom: 20px !important;
-        right: 20px !important;
-        padding: 10px 14px !important;
-        border-radius: 8px !important;
-        border: none !important;
-        background: #444 !important;
-        color: white !important;
+        padding: 9px 16px !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(44,37,34,0.24) !important;
+        background: #e7dcd6 !important;
+        color: #2c2522 !important;
         cursor: pointer !important;
         z-index: 2147483647 !important;
-        font-family: sans-serif !important;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif !important;
+        box-shadow: 0 1px 3px rgba(34,30,30,0.16) !important;
+        transform: translateY(16px);
+        opacity: 0;
+        transition: transform 0.2s ease-out, opacity 0.2s ease-out;
     `;
 
     document.documentElement.appendChild(btn);
+    attachBelowBrilliantPanel(btn, true);
 
     btn.addEventListener("click", () => {
         if (!dyslexiaFilterActive) {
@@ -265,6 +307,21 @@ function initSentenceFocus() {
     });
 }
 
+function registerCloseListener() {
+    if (closeListenerRegistered) return;
+    closeListenerRegistered = true;
+
+    window.addEventListener("message", (e) => {
+        if (!e.data || e.data.type !== "brilliant-mind-close") return;
+
+        const btn = document.getElementById("dyslexia-toggle-btn");
+        const filter = document.getElementById("dyslexia-calming-filter");
+        if (btn) btn.remove();
+        if (filter) filter.style.display = "none";
+        dyslexiaFilterActive = false;
+    });
+}
+
 
 export function apply() {
     document.documentElement.classList.add("dyslexia-mode");
@@ -316,4 +373,5 @@ export function apply() {
     createDyslexiaToggle();
     splitLongParagraphs();
     initSentenceFocus();
+    registerCloseListener();
 }

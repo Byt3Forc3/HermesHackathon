@@ -1,3 +1,42 @@
+function attachBelowBrilliantPanel(el, fullWidth = true) {
+    let attempts = 0;
+
+    function tryPosition() {
+        const panel = document.getElementById("brilliant-mind-embedded-panel");
+        if (!panel) return false;
+
+        const rect = panel.getBoundingClientRect();
+        const inset = 10;
+        el.style.position = "fixed";
+        el.style.left = rect.left + inset + "px";
+        el.style.top = rect.bottom + 8 + "px";
+        if (fullWidth) {
+            el.style.maxWidth = Math.max(rect.width - inset * 2, 0) + "px";
+            el.style.width = Math.max(rect.width - inset * 2, 0) + "px";
+        }
+        el.style.transform = "translateY(16px)";
+        el.style.opacity = "0";
+        el.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
+        el.style.zIndex = "2147483647";
+
+        requestAnimationFrame(() => {
+            el.style.transform = "translateY(0)";
+            el.style.opacity = "1";
+        });
+
+        return true;
+    }
+
+    if (tryPosition()) return;
+
+    const id = setInterval(() => {
+        attempts++;
+        if (tryPosition() || attempts > 30) clearInterval(id);
+    }, 100);
+}
+
+let closeListenerRegistered = false;
+
 export function apply() {
     if (document.getElementById("tts-widget")) return;
 
@@ -8,6 +47,18 @@ export function apply() {
     document.head.appendChild(style);
 
     createPlayer();
+
+    if (!closeListenerRegistered) {
+        closeListenerRegistered = true;
+        window.addEventListener("message", (e) => {
+            if (!e.data || e.data.type !== "brilliant-mind-close") return;
+            const widget = document.getElementById("tts-widget");
+            if (widget) {
+                window.speechSynthesis.cancel();
+                widget.remove();
+            }
+        });
+    }
 }
 
 function createPlayer() {
@@ -32,6 +83,7 @@ function createPlayer() {
         <div id="tts-status">Ready</div>
     `;
     document.body.appendChild(widget);
+    attachBelowBrilliantPanel(widget, true);
 
     // Logic
     let utterance = null;
