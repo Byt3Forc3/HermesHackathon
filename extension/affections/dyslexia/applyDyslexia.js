@@ -164,7 +164,7 @@ function initSentenceFocus() {
 
         const range = selection.getRangeAt(0);
         
-        // Identificăm toate paragrafele/listele atinse de selecție
+        // Identofy all paragraphs included in the selection
         const containers = [];
         let startContainer = range.startContainer.parentElement.closest("p, li, h1, h2, h3, blockquote");
         let endContainer = range.endContainer.parentElement.closest("p, li, h1, h2, h3, blockquote");
@@ -174,7 +174,7 @@ function initSentenceFocus() {
             return;
         }
 
-        // Găsim toate elementele de același tip între început și sfârșit
+        // Find all elems between start and end
         let current = startContainer;
         while (current && current !== endContainer.nextElementSibling) {
             if (current.matches("p, li, h1, h2, h3, blockquote")) {
@@ -186,11 +186,11 @@ function initSentenceFocus() {
         const activeFocusSpans = [];
 
         containers.forEach(container => {
-            // Creăm un range temporar doar pentru bucata din acest container
+            //un range temporar doar pentru bucata din acest container
             const tempRange = document.createRange();
             
             if (container === startContainer && container === endContainer) {
-                // Selecția este toată în același element
+                // Selection is within the same container
                 tempRange.setStart(range.startContainer, range.startOffset);
                 tempRange.setEnd(range.endContainer, range.endOffset);
             } else if (container === startContainer) {
@@ -214,7 +214,7 @@ function initSentenceFocus() {
                 tempRange.insertNode(focusSpan);
                 activeFocusSpans.push({ span: focusSpan, container: container });
 
-                // Aplicăm Blur pe restul textului din acest container specific
+                // Apply blur to all other text nodes in the container that are not part of the focus span
                 const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
                 let textNode;
                 const nodesToWrap = [];
@@ -269,33 +269,40 @@ function initSentenceFocus() {
 export function apply() {
     document.documentElement.classList.add("dyslexia-mode");
 
+    const fontUrl = chrome.runtime.getURL("affections/dyslexia/fonts/OpenDyslexic-Regular.otf");
     if (!document.getElementById("dyslexia-dynamic-style")) {
         const style = document.createElement("style");
         style.id = "dyslexia-dynamic-style";
         style.textContent = `
+
+            @font-face {
+                font-family: 'OpenDyslexic';
+                src: url('${fontUrl}') format('opentype');
+            }
             @import url('https://fonts.googleapis.com/css2?family=Lexend&display=swap');
 
+
+
             html.dyslexia-mode body,
-            html.dyslexia-mode p {
-                font-family: 'Lexend', sans-serif !important;
+            html.dyslexia-mode p,
+            html.dyslexia-mode span,
+            html.dyslexia-mode li,
+            html.dyslexia-mode h1, html.dyslexia-mode h2, html.dyslexia-mode h3,
+            html.dyslexia-mode div {
+                font-family: 'OpenDyslexic', 'Lexend', sans-serif !important;
                 font-size: 18px !important;
                 word-spacing: 0.3em !important;
                 line-height: 1.9 !important;
-                color: #2c2c2c !important;
+                /* color: #000000 !important; */
             }
 
             html.dyslexia-mode a {
-                color: #002247 !important;
+                /* color: #002247 !important; */
                 text-decoration: none !important;
                 font-weight: bold !important;
-                font-family: 'Lexend', sans-serif !important;
+                font-family: 'OpenDyslexic', 'Lexend', sans-serif !important;
             }
 
-            html.dyslexia-mode i,
-            html.dyslexia-mode em {
-                font-style: normal !important;
-                font-weight: 700 !important;
-            }
 
             /* Focus system styles */
             .dyslexia-blurred-text {
@@ -304,7 +311,7 @@ export function apply() {
             }
 
             .dyslexia-focused-text {
-                background: rgba(255, 232, 119, 0.4);
+                background: rgba(255, 232, 119, 0.19);
                 padding: 2px 0;
                 border-radius: 3px;
             }

@@ -59,6 +59,7 @@
         "affections/partially_blindness/*.css",
         "affections/dyslexia/*.js",
         "affections/dyslexia/*.css",
+        "affections/dyslexia/OpenDyslexic/*.otf",
         "affections/epilepsy/*.js",
         "affections/epilepsy/*.css",
         "affections/simplify/*.js",
