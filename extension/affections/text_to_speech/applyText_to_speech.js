@@ -49,19 +49,14 @@ function createPlayer() {
     const labelSpeed = widget.querySelector("#tts-speed-val");
     const status = widget.querySelector("#tts-status");
 
+    // Prevent buttons from clearing selection
+    widget.querySelectorAll("button").forEach(btn => {
+        btn.addEventListener("mousedown", e => e.preventDefault());
+    });
+
     function getTextToRead() {
         const selection = window.getSelection().toString().trim();
-        if (selection) return selection;
-
-        // Try to find main content
-        const selectors = ["article", "main", "#content", "#main", ".post-content", "#mw-content-text"];
-        for (let sel of selectors) {
-            const el = document.querySelector(sel);
-            if (el && el.innerText.length > 50) {
-                return el.innerText;
-            }
-        }
-        return document.body.innerText;
+        return selection || document.body.innerText;
     }
 
     function splitText(text) {
@@ -81,6 +76,10 @@ function createPlayer() {
         window.speechSynthesis.cancel();
 
         const text = getTextToRead();
+        if (!text) {
+            status.textContent = "No text found";
+            return;
+        }
         textChunks = splitText(text);
         
         if (currentChunkIndex >= textChunks.length) currentChunkIndex = 0;
