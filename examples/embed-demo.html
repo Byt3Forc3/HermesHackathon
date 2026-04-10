@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brilliant Mind embed demo</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 42rem;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+        code { background: #f1f5f9; padding: 0.1em 0.35em; border-radius: 4px; }
+    </style>
+    <!-- After build: preview from packages/embed (npm run preview) and use /embed.js -->
+    <script
+        src="/embed.js"
+        data-brilliantmind
+        data-site-id="demo"
+        data-api-base="http://127.0.0.1:8787"
+        data-site-key="bm_pub_demo"
+        defer
+    ></script>
+</head>
+<body>
+    <h1>Embed demo</h1>
+    <p>
+        Use the <strong>Brilliant Mind</strong> handle on the right. Pick an experience, then reload if prompted.
+        Start the API (<code>cd server && npm start</code>) and preview the embed bundle
+        (<code>cd packages/embed && npm run preview</code>) so <code>/embed.js</code> and <code>/extension/</code> resolve.
+    </p>
+    <p>
+        For Reader mode + AI, select Reader in the panel, then use the AI actions after the page reloads.
+    </p>
+</body>
+</html>

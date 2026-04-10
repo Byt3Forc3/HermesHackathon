@@ -1,0 +1,29 @@
+body {
+    background: #faf8f5 !important;
+    color: #222 !important;
+    font-family: Georgia, serif !important;
+    padding: 60px !important;
+    display: flex;
+    justify-content: center;
+}
+
+#reader-container {
+    max-width: 800px;
+    font-size: 20px !important;
+    line-height: 1.6 !important;
+}
+
+p {
+    margin: 1em 0 !important;
+}
+
+h1, h2, h3 {
+    margin-top: 2em !important;
+    margin-bottom: 0.8em !important;
+    font-family: Georgia, serif !important;
+}
+
+a {
+    color: inherit !important;
+    text-decoration: none !important;
+}

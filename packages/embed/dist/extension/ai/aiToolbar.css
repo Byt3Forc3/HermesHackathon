@@ -1,0 +1,71 @@
+/* The floating toolbar */
+#ai-toolbar {
+    position: fixed;
+    top: 50%;                          /* center vertically */
+    right: 0;
+    transform: translateY(-50%);       /* center correction */
+    width: 260px;
+    background: #ffffffef;
+    border-left: 2px solid #bbb;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+    font-family: Arial, sans-serif;
+    transition: transform 0.25s ease;
+    z-index: 999999;
+}
+
+/* SLIDE OFFSCREEN (keep vertical centering) */
+#ai-toolbar.collapsed {
+    transform: translateY(-50%) translateX(260px);
+}
+
+/* The handle button */
+#ai-toolbar-handle {
+    position: fixed;
+    top: 50%;                          /* center vertically */
+    transform: translateY(-50%);       /* center correction */
+    right: 0;
+    width: 28px;
+    height: 60px;
+    background: #ddd;
+    border: 1px solid #aaa;
+    border-right: none;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 10px 0 0 10px;
+    z-index: 1000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: right 0.25s ease;
+}
+
+
+/* Section styling */
+#ai-toolbar-header {
+    padding: 12px;
+    font-weight: bold;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+}
+
+#ai-toolbar-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-action {
+    margin: 6px 0;
+    padding: 10px;
+    width: 100%;
+    background: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 15px;
+}
+
+.ai-action:hover {
+    background: #e6e6e6;
+}

@@ -1,0 +1,19 @@
+body, p, span, div, a {
+    font-family: "Arial", sans-serif !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.12em !important;
+    font-size: 18px !important;
+    color: #222 !important;
+}
+
+p {
+    max-width: 75ch !important;
+}
+
+body {
+    background-color: #f5f5f5 !important;
+}
+
+* {
+    outline: none !important;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "brilliantmind-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs",
+    "landing": "node ../scripts/serve-landing.mjs"
+  }
+}

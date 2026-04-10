@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brilliant Mind embed demo</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 42rem;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+        code { background: #f1f5f9; padding: 0.1em 0.35em; border-radius: 4px; }
+    </style>
+    <script
+        src="/embed.js"
+        data-brilliantmind
+        data-site-id="demo"
+        data-api-base="http://127.0.0.1:8787"
+        data-site-key="bm_pub_demo"
+        defer
+    ></script>
+</head>
+<body>
+    <h1>Brilliant Mind embed demo</h1>
+    <p>
+        Open the <strong>Brilliant Mind</strong> strip on the right. Run the API
+        (<code>cd server && npm start</code>) on port 8787, then
+        <code>npm run preview</code> in <code>packages/embed</code> to serve this page, <code>embed.js</code>, and <code>/extension/</code>.
+    </p>
+</body>
+</html>

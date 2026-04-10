@@ -1,0 +1,97 @@
+/* Full-page centering */
+body {
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 30px;
+}
+
+/* Card container */
+.settings-card {
+    width: 360px;
+    background: white;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+/* Title */
+h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #2c3e50;
+}
+
+/* Each setting block */
+.setting {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.setting label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Toggle row */
+.toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Dropdown */
+#fontFamily {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Range sliders */
+.range-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type=range] {
+    width: 100%;
+}
+
+/* Color picker */
+#textColor {
+    width: 100%;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* Save button */
+#saveBtn {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    background: #0066cc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#saveBtn:hover {
+    background: #0055aa;
+}

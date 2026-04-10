@@ -1,0 +1,15 @@
+/* Disable CSS animations completely */
+* {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Stop blinking and moving text (old HTML tags) */
+blink, marquee {
+    display: none !important;
+}
+
+/* Reduce brightness/contrast slightly to soften rapid flashes */
+html {
+    filter: brightness(0.9) contrast(0.9) !important;
+}

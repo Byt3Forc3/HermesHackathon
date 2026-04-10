@@ -1,0 +1,57 @@
+/* Dyslexia Structural Rules */
+
+/* Narrower content column for easier eye tracking */
+html.dyslexia-mode main, 
+html.dyslexia-mode article, 
+html.dyslexia-mode #content,
+html.dyslexia-mode .mw-body {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    padding: 30px !important;
+    display: block !important;
+}
+
+/* Ensure links remain underlined and clear */
+html.dyslexia-mode a {
+    color: #001f41 !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+}
+
+html.dyslexia-mode {
+    /* saturate(0.5) = 50% saturation (muted)
+       saturate(1.0) = 100% saturation (normal)
+    */
+    filter: saturate(0.9) contrast(0.9) !important;
+}
+
+/* Ensure images don't get too washed out if you want them preserved */
+html.dyslexia-mode img {
+    filter: saturate(1.1) !important; 
+}
+
+html.dyslexia-mode p.dyslexia-focus-active,
+html.dyslexia-mode li.dyslexia-focus-active {
+    filter: blur(4px) opacity(0.5) !important;
+    transition: filter 0.3s ease !important;
+}
+
+/* Keep the selected text crystal clear */
+html.dyslexia-mode .dyslexia-focus-active::selection {
+    background: #ffe877 !important; /* Soft Cream Highlight */
+    color: #000 !important;
+    filter: blur(0) opacity(1) !important;
+    text-shadow: none !important;
+}
+
+.dyslexia-blurred-text {
+    filter: blur(4px) opacity(0.5);
+    transition: filter 0.3s ease;
+}
+
+.dyslexia-focused-text {
+    background: rgba(255, 232, 119, 0.378);
+    padding: 2px 0;
+    border-radius: 3px;
+}
+

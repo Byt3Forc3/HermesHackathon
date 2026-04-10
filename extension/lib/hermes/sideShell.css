@@ -1,0 +1,115 @@
+#hermes-brilliant-shell {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 2147483646;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #1a1a1a;
+    pointer-events: none;
+}
+
+#hermes-brilliant-shell * {
+    box-sizing: border-box;
+}
+
+#hermes-shell-handle {
+    pointer-events: auto;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 36px;
+    min-height: 120px;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    background: linear-gradient(160deg, #2563eb, #1d4ed8);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: -2px 0 12px rgba(15, 23, 42, 0.25);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    padding: 10px 6px;
+}
+
+#hermes-shell-handle:hover {
+    filter: brightness(1.05);
+}
+
+#hermes-shell-handle.hermes-collapsed {
+    right: 0;
+}
+
+#hermes-shell-panel {
+    pointer-events: auto;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(340px, 92vw);
+    max-height: 100vh;
+    overflow: auto;
+    background: #f8fafc;
+    border-left: 1px solid #e2e8f0;
+    box-shadow: -8px 0 24px rgba(15, 23, 42, 0.12);
+    padding: 16px 16px 24px;
+    transform: translateX(0);
+    transition: transform 0.22s ease;
+}
+
+#hermes-brilliant-shell.hermes-panel-collapsed #hermes-shell-panel {
+    transform: translateX(100%);
+}
+
+#hermes-shell-panel h3 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+#hermes-shell-panel .hermes-sub {
+    margin: 0 0 14px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.hermes-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    margin: 14px 0 8px;
+}
+
+.hermes-module-list label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.hermes-module-list label:last-child {
+    border-bottom: none;
+}
+
+.hermes-module-list input {
+    margin-top: 3px;
+}
+
+.hermes-mods-list {
+    margin: 0;
+    padding-left: 18px;
+    color: #334155;
+    font-size: 12px;
+}
+
+.hermes-mods-list li {
+    margin-bottom: 4px;
+}

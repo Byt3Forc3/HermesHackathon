@@ -1,0 +1,8 @@
+{
+  "name": "@brilliantmind/hermes-core",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Logical package name for Hermes platform code (implemented under extension/lib/hermes for Chrome MV3 packaging).",
+  "main": "../../extension/lib/hermes/platform.js",
+  "type": "module"
+}

@@ -1,0 +1,286 @@
+/* Autism: reduce bright colors and strong visual contrasts
+	 - Applies a gentle desaturation and contrast reduction across the page
+	 - Keeps text color inheritance to preserve readability
+	 - Allows opt-out for images with `data-preserve-color="true"`
+*/
+
+.autism-color-reduced, .autism-color-reduced * {
+	transition: filter 220ms ease, background-color 220ms ease, color 220ms ease !important;
+}
+
+/* Global softening: desaturate and slightly reduce contrast/brightness */
+.autism-color-reduced html, .autism-color-reduced body {
+	filter: saturate(0.65) contrast(0.95) brightness(0.98);
+}
+
+/* Keep images and media slightly more controlled but readable */
+.autism-color-reduced img,
+.autism-color-reduced picture,
+.autism-color-reduced video,
+.autism-color-reduced svg {
+	filter: saturate(0.6) contrast(0.95) brightness(0.98);
+	/* Prevent heavy shadows from being visually jarring */
+	box-shadow: none !important;
+}
+
+/* Soften strong borders and shadows that create harsh contrast */
+.autism-color-reduced * {
+	box-shadow: none !important;
+	border-color: rgba(0,0,0,0.14) !important;
+}
+
+/* Provide a subtle wash over non-transparent backgrounds to mute extremes.
+	 Uses a pseudo-element so we don't permanently overwrite author colors. */
+.autism-color-reduced [style*="background"],
+.autism-color-reduced [style*="background-color"] {
+	position: relative;
+}
+.autism-color-reduced [style*="background" ]::after,
+.autism-color-reduced [style*="background-color"]::after {
+	content: "";
+	pointer-events: none;
+	position: absolute;
+	inset: 0;
+	background: rgba(255,255,255,0.06);
+	mix-blend-mode: lighten;
+}
+
+/* Utility class for extra muting */
+.autism-muted {
+	filter: saturate(0.5) contrast(0.9) brightness(0.95) !important;
+}
+
+/* Allow authors/pages to opt images out of desaturation */
+.autism-color-reduced img[data-preserve-color="true"] {
+	filter: none !important;
+}
+
+/* Ensure text color remains readable and inherited */
+.autism-color-reduced p,
+.autism-color-reduced span,
+.autism-color-reduced a,
+.autism-color-reduced h1,
+.autism-color-reduced h2,
+.autism-color-reduced h3,
+.autism-color-reduced h4,
+.autism-color-reduced h5,
+.autism-color-reduced h6 {
+	color: inherit !important;
+}
+
+/* Hide extra page UI (table of contents, sidebars, banners, sticky UI) */
+.autism-hide-extras .toc,
+.autism-hide-extras #toc,
+.autism-hide-extras .table-of-contents,
+.autism-hide-extras .mw-navigation,
+.autism-hide-extras #mw-panel,
+.autism-hide-extras .sidebar,
+.autism-hide-extras aside,
+.autism-hide-extras nav,
+.autism-hide-extras header,
+.autism-hide-extras footer,
+.autism-hide-extras .site-tools,
+.autism-hide-extras .search,
+.autism-hide-extras .searchbox,
+/* .autism-hide-extras .infobox, */
+.autism-hide-extras .mw-head,
+.autism-hide-extras .portal,
+.autism-hide-extras .mw-editsection,
+.autism-hide-extras .navbox,
+.autism-hide-extras .metadata,
+.autism-hide-extras .mw-indicators,
+.autism-hide-extras .mw-page-header,
+.autism-hide-extras [role="banner"],
+.autism-hide-extras [role="navigation"],
+.autism-hide-extras [role="complementary"],
+.autism-hide-extras [role="search"] {
+	display: none !important;
+	visibility: hidden !important;
+	height: 0 !important;
+	width: 0 !important;
+	overflow: hidden !important;
+}
+
+/* Hide many fixed/sticky UI elements which often act as distractions */
+.autism-hide-extras [style*="position:fixed"],
+.autism-hide-extras [style*="position:sticky"] {
+	display: none !important;
+}
+
+/* Vertical layout and spacing for primary content */
+.autism-vertical-layout main,
+.autism-vertical-layout article,
+.autism-vertical-layout #content,
+.autism-vertical-layout #mw-content-text {
+	display: block !important;
+	width: 100% !important;
+	/* narrower, more readable measure */
+	max-width: 760px !important;
+	margin: 28px auto !important;
+	padding: 20px 28px !important;
+	background: rgba(255,255,255,0.01) !important;
+	border-radius: 6px !important;
+}
+
+.autism-vertical-layout main > *,
+.autism-vertical-layout article > *,
+.autism-vertical-layout #content > * {
+	display: block !important;
+	width: 100% !important;
+	margin: 22px 0 !important;
+	padding: 0 !important;
+}
+
+.autism-vertical-layout h1,
+.autism-vertical-layout h2,
+.autism-vertical-layout h3 {
+	margin-top: 22px !important;
+	margin-bottom: 10px !important;
+}
+
+.autism-vertical-layout p,
+.autism-vertical-layout li,
+.autism-vertical-layout blockquote {
+	font-size: 20px !important;
+	line-height: 1.9 !important;
+	margin: 14px 0 !important;
+}
+
+.autism-vertical-layout img {
+	display: block !important;
+	float: none !important;
+	clear: both !important;
+	max-width: 100% !important;
+	margin: 18px auto !important;
+	height: auto !important;
+}
+
+/* Ensure pictures/figures do not float next to text */
+.autism-vertical-layout picture,
+.autism-vertical-layout figure {
+	display: block !important;
+	float: none !important;
+	clear: both !important;
+	width: 100% !important;
+	margin: 18px 0 !important;
+}
+
+/* Override common float/align utility classes used by websites */
+.autism-vertical-layout .alignleft,
+.autism-vertical-layout .alignright,
+.autism-vertical-layout .float-left,
+.autism-vertical-layout .float-right,
+.autism-vertical-layout .pull-left,
+.autism-vertical-layout .pull-right {
+	float: none !important;
+	display: block !important;
+	width: 100% !important;
+	margin: 18px 0 !important;
+}
+
+/* Ensure paragraphs don't allow text wrapping around images */
+.autism-vertical-layout p {
+	clear: both !important;
+}
+
+/* Ensure captions remain horizontal and legible */
+.autism-vertical-layout figcaption,
+.autism-vertical-layout .caption,
+.autism-vertical-layout .wp-caption-text,
+.autism-vertical-layout .figure-caption {
+	display: block !important;
+	width: auto !important;
+	max-width: 100% !important;
+	margin: 8px 0 18px 0 !important;
+	white-space: normal !important;
+	writing-mode: horizontal-tb !important;
+	text-orientation: mixed !important;
+	transform: none !important;
+	float: none !important;
+	clear: none !important;
+	text-align: left !important;
+	line-height: 1.5 !important;
+	font-size: 16px !important;
+	color: rgba(0,0,0,0.7) !important;
+}
+
+/* Limit stacking/flow changes to the primary content region only.
+   Avoid globally changing all div/section elements which can break site layouts. */
+.autism-vertical-layout main > *,
+.autism-vertical-layout article > *,
+.autism-vertical-layout #content > * {
+	display: block !important;
+	width: 100% !important;
+	float: none !important;
+	clear: both !important;
+	margin: 18px 0 !important;
+}
+
+/* Make lists easier to scan by increasing spacing between items */
+.autism-vertical-layout ul,
+.autism-vertical-layout ol {
+	margin-left: 1.2em !important;
+	margin-bottom: 18px !important;
+}
+
+/* Ensure tables are full-width but readable; avoid horizontal overflow */
+.autism-vertical-layout table {
+	width: 100% !important;
+	table-layout: auto !important;
+	overflow: auto !important;
+	display: block !important;
+	margin: 18px 0 !important;
+	border-collapse: collapse !important;
+}
+
+/* Note: DOM-based ad removal was removed from the autism module.
+   If ad hiding is desired later, prefer non-destructive, well-scoped rules
+   or a network-level approach (declarativeNetRequest) configured in the
+   extension manifest. */
+
+/* Paragraph summary overlay used by autism mode when enabled.
+   The box is slightly opaque, with generous spacing and line-height
+   for readability. It is inserted into each paragraph as an absolutely
+   positioned overlay that blends with the muted color scheme. */
+.autism-paragraph-summaries-enabled .autism-paragraph-summary-box {
+	/* Fill the paragraph area entirely */
+	position: absolute;
+	inset: 0; /* top:0; right:0; bottom:0; left:0 */
+	background: #ffffff; /* fully opaque */
+	color: #111;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+	border: 1px solid rgba(0,0,0,0.06);
+	font-size: 20px !important;
+	line-height: 1.9 !important;
+	letter-spacing: 0.2px !important;
+	display: flex;
+	align-items: center; /* vertically center the summary text */
+	z-index: 9999 !important;
+	overflow: auto;
+}
+
+/* Make it obvious the summary box is interactive */
+.autism-paragraph-summaries-enabled .autism-paragraph-summary-box {
+	cursor: pointer;
+}
+
+.autism-paragraph-summaries-enabled .autism-paragraph-summary-box:focus {
+	outline: 3px solid rgba(21, 156, 228, 0.18);
+	box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+}
+
+/* When color-reduction is active, slightly adjust the overlay to match tone */
+.autism-color-reduced .autism-paragraph-summary-box {
+	background: #f5f5f7; /* fully opaque, matches muted tone */
+}
+
+/* Reduce font-size for very narrow viewports while keeping spacing */
+@media (max-width: 420px) {
+	.autism-paragraph-summaries-enabled .autism-paragraph-summary-box {
+		font-size: 18px !important;
+		padding: 14px !important;
+	}
+}
+
