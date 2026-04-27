@@ -1,0 +1,284 @@
+/* =========================================
+   1. GLOBAL VARIABLES & FONTS 
+   (Copied from home_page_style.css)
+   ========================================= */
+:root {
+    --bg-color: #fdfaf6;
+    --text-color: #000000;
+    --text-muted: #3b3a36
+    --primary-gradient: linear-gradient(135deg, #f2a65a 0%, #e7717d 100%);
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-border: rgba(120, 117, 108, 0.15);
+    --card-hover: rgba(255, 255, 255, 0.9);
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://antijique.github.io/OpenDyslexic/webfont/OpenDyslexic-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://antijique.github.io/OpenDyslexic/webfont/OpenDyslexic-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://antijique.github.io/OpenDyslexic/webfont/OpenDyslexic-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'OpenDyslexic', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    line-height: 1.6;
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(242, 166, 90, 0.1), transparent 30%),
+        radial-gradient(circle at 85% 30%, rgba(125, 163, 161, 0.15), transparent 30%);
+    background-attachment: fixed;
+}
+
+h1, h2, h3 {
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+
+/* =========================================
+   2. NAVBAR & BUTTONS 
+   (Copied from home_page_style.css)
+   ========================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5%;
+    background: rgba(253, 250, 246, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--card-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo-img {
+    height: 32px;
+    width: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.nav-links { display: flex; gap: 2rem; }
+.nav-link { text-decoration: none; color: var(--text-color); font-weight: 600; transition: color 0.3s ease; }
+.nav-link:hover { color: #e7717d; }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: #3b3a36;
+    box-shadow: 0 4px 15px rgba(231, 113, 125, 0.25);
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    white-space: nowrap;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 113, 125, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+    background: var(--card-bg);
+    border-color: rgba(120, 117, 108, 0.3);
+}
+
+
+/* =========================================
+   3. RESULT CARD UI 
+   (Copied from home_page_style.css)
+   ========================================= */
+.access-list-item {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid rgba(120, 117, 108, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.access-list-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--text-muted);
+    opacity: 0.2;
+    transition: all 0.3s ease;
+}
+
+.access-list-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(120, 117, 108, 0.1);
+    border-color: rgba(120, 117, 108, 0.2);
+}
+
+.access-list-item:hover::before {
+    opacity: 1;
+    background: var(--primary-gradient);
+}
+
+.access-icon-wrap {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.bg-blue { background: rgba(125, 163, 161, 0.15); }
+.bg-purple { background: rgba(162, 176, 154, 0.2); }
+.bg-pink { background: rgba(231, 113, 125, 0.15); }
+.bg-orange { background: rgba(242, 166, 90, 0.15); }
+.bg-teal { background: rgba(125, 163, 161, 0.25); }
+
+.access-content h3 { font-size: 1.25rem; margin-bottom: 0.25rem; color: var(--text-color); }
+.access-content p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+
+
+/* =========================================
+   4. QUIZ SPECIFIC STYLES
+   ========================================= */
+.quiz-section {
+    padding: 4rem 5%;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quiz-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 700px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.disclaimer-box {
+    background: rgba(242, 166, 90, 0.15); 
+    border: 1px solid rgba(242, 166, 90, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: #c9711c;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e2e1df;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary-gradient);
+    width: 0%;
+    transition: width 0.4s ease;
+}
+
+.question-text {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.option-btn {
+    background: #ffffff;
+    border: 2px solid var(--card-border);
+    border-color: #3b3a36;
+    padding: 1.2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    font-family: 'OpenDyslexic', sans-serif;
+}
+
+.option-btn:hover {
+    border-color: #f2a65a; 
+    transform: translateX(8px);
+    box-shadow: 0 4px 15px rgba(242, 166, 90, 0.15);
+}
+
+#result-screen {
+    display: none;
+    text-align: center;
+}
+
+.recommended-profile {
+    margin-top: 2rem;
+    text-align: left;
+}
